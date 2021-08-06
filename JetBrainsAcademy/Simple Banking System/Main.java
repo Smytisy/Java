@@ -36,7 +36,7 @@ public class Main {
                         setNumberAndPin(key1, pin1);
                         System.out.printf("%nYour card has been created%nYour card number:%n%s%nYour card PIN:%n%s%n", key1, pin1);
                     } else {
-                        System.out.printf("%nBalance: %d%n", getBalance(key));     
+                        System.out.printf("%nBalance: %d%n", getBalance(key));
                     } break;
                 }
                 case 2: {
