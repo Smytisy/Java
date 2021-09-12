@@ -46,7 +46,7 @@ public class Main {
                         System.out.printf("Enter your PIN:%n");
                         pin = scanner.next().replaceAll("\\s+","");
                         String tmp = getPinCard(key);
-                        isLogIn = tmp != null && tmp.equals(pin);               // getPin
+                        isLogIn = tmp != null && tmp.equals(pin);
                         System.out.printf(isLogIn ?
                                 "%nYou have successfully logged in!%n" : "%nWrong card number or PIN!%n");
                         if(!isLogIn) {
@@ -72,6 +72,12 @@ public class Main {
                         isLogIn = false;
                         key = null; pin = null;
                     } break;
+                }
+                case 3214: {
+                    flag = false;
+                    System.out.printf("%nBye!%n");
+                    dropTable();
+                    break;
                 }
             }
         }
@@ -150,7 +156,7 @@ public class Main {
         }
     }
 
-    public static boolean chekCard(String card) {                                   // complete
+    public static boolean chekCard(String card) {
         int num;
         int sum = 0;
         for (int i = 0; i < 16; i++) {
@@ -168,7 +174,7 @@ public class Main {
 
 
 
-    public static int getBalance(String card) {                                     // complete
+    public static int getBalance(String card) {
         try {
             int res;
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + url);
@@ -186,7 +192,7 @@ public class Main {
     }
 
 
-    public static void doTransfer(String thisCard) {                                     // complete
+    public static void doTransfer(String thisCard) {
         String delMoney = "UPDATE card SET `balance` = `balance` - ? WHERE `number` = ?;";
         String appMoney = "UPDATE card SET `balance` = `balance` + ? WHERE `number` = ?;";
 
@@ -235,7 +241,7 @@ public class Main {
         }
     }
 
-    public static void addIncome(String key) {                                     // complete
+    public static void addIncome(String key) {
         String queryIncome = "UPDATE card SET `balance` = `balance` + ? WHERE `number` = ?;";
 
         try {
@@ -263,12 +269,12 @@ public class Main {
 
     }
 
-    public static boolean haveCard(String card) {                                     // complete
+    public static boolean haveCard(String card) {
         try {
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + url);
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet1 = statement.executeQuery("select `number` from card where `number` = " + card + ";"); // get
+            ResultSet resultSet1 = statement.executeQuery("select `number` from card where `number` = " + card + ";");
             resultSet1.next();
             String str = resultSet1.getString("number");
             connection.close();
@@ -282,17 +288,29 @@ public class Main {
         return false;
     }
 
-    public static void closeAcc(String key) {                                     // complete
+    public static void closeAcc(String key) {
         try {
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + url);
             Statement statement = connection.createStatement();
 
-            boolean resultSet = statement.execute("DELETE FROM card WHERE `number` = " + key + ";"); // get
+            boolean resultSet = statement.execute("DELETE FROM card WHERE `number` = " + key + ";");
             connection.close();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
 
+    public static void dropTable() { // не работает
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:" + url);
+            Statement statement = connection.createStatement();
+            int resultSet = statement.executeUpdate("DROP TABLE card;");
+            System.out.println(resultSet > 0 ? "SUCCESS" : "FAIL");
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ex.printStackTrace();
+        }
     }
 }
