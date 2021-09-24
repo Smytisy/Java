@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+
     private static String url;
     public static void main(String args[]) {
         doTask(args[1]);
@@ -304,9 +305,8 @@ public class Main {
     public static void dropTable() { // не работает
         try {
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + url);
-            Statement statement = connection.createStatement();
-            int resultSet = statement.executeUpdate("DROP TABLE card;");
-            System.out.println(resultSet > 0 ? "SUCCESS" : "FAIL");
+            connection.createStatement().execute("DELETE FROM card");
+
             connection.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
